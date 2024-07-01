@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout}">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security6"
+      lang="en">
 <head>
   <title>Update Product</title>
+  <th:block th:replace="layout::link-css1"></th:block>
+  <th:block th:replace="layout::link-css2"></th:block>
+  <th:block th:replace="layout::link-css3"></th:block>
+  <th:block th:replace="layout::link-css4"></th:block>
+  <th:block th:replace="layout::link-css5"></th:block>
+  <th:block th:replace="layout::link-css6"></th:block>
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body>
-<section layout:fragment="content" class="container mt-5">
+<th:block th:replace="layout::header"></th:block>
+<section  class="container mt-5">
   <h1>Edit Product</h1>
   <form th:action="@{/products/update/{id}(id=${product.id})}"
         th:object="${product}" method="post" class="needs-validation" novalidate>
@@ -44,5 +51,6 @@ product.category.id}"></option>
 <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
 </script>
+<th:block th:replace="layout::footer"></th:block>
 </body>
 </html>
