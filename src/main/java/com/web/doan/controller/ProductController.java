@@ -3,15 +3,24 @@ package com.web.doan.controller;
 import com.web.doan.entity.Product;
 import com.web.doan.service.CategoryService;
 import com.web.doan.service.ProductService;
+import jakarta.servlet.ServletContext;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/products")
@@ -20,7 +29,8 @@ public class ProductController {
     private ProductService productService;
     @Autowired
     private CategoryService categoryService;
-
+    @Autowired
+    private ServletContext servletContext;
 
 
     @GetMapping
@@ -38,9 +48,17 @@ public class ProductController {
     }
     // Process the form for adding a new product
     @PostMapping("/add")
-    public String addProduct(@Valid Product product, BindingResult result) {
+    public String addProduct(@Valid Product product, BindingResult result, @RequestParam("image") MultipartFile imageFile) {
         if (result.hasErrors()) {
             return "/products/add-product";
+        }
+        if (!imageFile.isEmpty()) {
+            try {
+                String imageName = saveImageStatic(imageFile);
+                product.setImgUrl("static/images/" +imageName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         productService.addProduct(product);
         return "redirect:/products";
@@ -71,5 +89,17 @@ public class ProductController {
     public String deleteProduct(@PathVariable Long id) {
         productService.deleteProductById(id);
         return "redirect:/products";
+    }
+    private String saveImageStatic(MultipartFile image) throws IOException {
+        String uploadDir = servletContext.getRealPath("/static/images/");
+        File saveFileDir = new File(uploadDir);
+        if (!saveFileDir.exists()) {
+            saveFileDir.mkdirs();
+        }
+
+        String fileName = UUID.randomUUID() + "." + StringUtils.getFilenameExtension(image.getOriginalFilename());
+        Path path = Paths.get(uploadDir + fileName);
+        Files.copy(image.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+        return fileName;
     }
 }

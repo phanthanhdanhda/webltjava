@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security6"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       lang="en">
 <head>
     <meta charset="UTF-8">
@@ -170,7 +171,10 @@
     </section>
     <!-- end slider section -->
 </div>
-
+<div class="container mt-4">
+    <section layout:fragment="content">
+    </section>
+</div>
 <footer th:fragment="footer">
     <!-- info section -->
 

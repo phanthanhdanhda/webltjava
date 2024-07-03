@@ -56,7 +56,7 @@ public class SecurityConfig {
                 formLogin(formLogin -> formLogin
                         .loginPage("/login") // Trang đăng nhập.
                         .loginProcessingUrl("/login") // URL xử lý đăng nhập.
-                        .defaultSuccessUrl("/shop") // Trang sau đăng nhập thành công.
+                        .defaultSuccessUrl("/home") // Trang sau đăng nhập thành công.
                         .failureUrl("/login?error") // Trang đăng nhập thất bại.
                         .permitAll()
                 ) .

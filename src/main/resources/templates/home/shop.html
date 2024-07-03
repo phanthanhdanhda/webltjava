@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security6"
+      lang="en">
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <link rel="shortcut icon" href="images/favicon.png" type="">
+
+  <title> Zoutoys </title>
+
+  <th:block th:replace="layout::link-css1"></th:block>
+  <th:block th:replace="layout::link-css2"></th:block>
+  <th:block th:replace="layout::link-css3"></th:block>
+  <th:block th:replace="layout::link-css4"></th:block>
+  <th:block th:replace="layout::link-css5"></th:block>
+  <th:block th:replace="layout::link-css6"></th:block>
+
+</head>
+
+<body class="sub_page">
+
+<th:block th:replace="layout::header"></th:block>
+
+<!-- shop section -->
+
+<section class="shop_section layout_padding">
+  <div class="container">
+    <div class="heading_container heading_center">
+      <h2>
+        New Arrivals
+      </h2>
+    </div>
+    <div class="row">
+      <div th:each="product : ${productList}" class="col-sm-6 col-md-4 col-lg-3">
+        <div class="box">
+          <a href="">
+            <div class="img-box">
+              <img th:src="${product.ImgUrl}" alt="">
+            </div>
+            <div class="detail-box">
+              <a th:text="${product.name}" href="">
+              </a>
+              <h5>Price</h5>
+              <h6 th:text="${product.price}">
+              </h6>
+              <form th:action="@{/cart/add}" method="post">
+                <input type="hidden" name="quantity" min="1" value="1"
+                       class="form-control d-inline-block" style="width: 70px;">
+                <input type="hidden" th:value="${product.id}" name="productId"/>
+                <button type="submit" class="btn btn-primary">Add to cart</button>
+              </form>
+            </div>
+          </a>
+        </div>
+      </div>
+
+    </div>
+    <div class="btn-box">
+      <a href="">
+        View All Products
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- end shop section -->
+
+<!-- info section -->
+
+<th:block th:replace="layout::footer"></th:block>
+
+</body>
+
+</html>
